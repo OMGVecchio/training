@@ -1,15 +1,15 @@
-const http = require('http')
-const fs = require('fs')
-const path = require('path')
-const { promisify } = require('util')
+import http from 'http'
+import fs from 'fs'
+import path from 'path'
+import { promisify } from 'util'
 
-/** 休眠延迟 */
-const sleep = async timing => await new Promise(r => setTimeout(r, timing))
+import './env/compatible.js'
+import sleep from './utils/sleep.js'
 
 http.createServer(async (req, res) => {
 
   /** 解析静态资源 */
-  const static = async (fileName, timing) => {
+  const staticResource = async (fileName, timing) => {
 
     /** 使用 esModule 的时候，会严格要求 JavaScript 的 MIME 类型 */
     if (fileName.match(/^esModule/)) {
@@ -17,7 +17,7 @@ http.createServer(async (req, res) => {
     }
 
     try {
-      const fullPath = path.resolve(__dirname, 'static', fileName)
+      const fullPath = path.resolve(__dirname__(import.meta), 'static', fileName)
 
       /** 根据 queryString 的 timing 参数设置资源延迟加载时间 */
       if (timing) {
@@ -32,6 +32,7 @@ http.createServer(async (req, res) => {
         writeStream.pipe(res)
       }
     } catch (err) {
+      console.error(err)
       res.end()
     }
   }
@@ -43,7 +44,7 @@ http.createServer(async (req, res) => {
 
   /** 根据不同路由，处理不同模块的逻辑操作 */
   if (pathname.match(/^\/$/)) {
-    await static('index.html', timing)
+    await staticResource('index.html', timing)
   } else if (pathname.match(/^\/api/)) {
     switch (pathname.slice(5)) {
       case '/form':
@@ -51,7 +52,7 @@ http.createServer(async (req, res) => {
     }
     res.end()
   } else {
-    await static(pathname.slice(1), timing)
+    await staticResource(pathname.slice(1), timing)
   }
 
 }).listen(3000)

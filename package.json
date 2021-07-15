@@ -1,0 +1,23 @@
+{
+  "name": "training-grounds",
+  "version": "1.0.0",
+  "description": "training-grounds",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "pm2-dev": "pm2 start server.js --watch",
+    "pm2": "pm2 start server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OMGVecchio/training.git"
+  },
+  "author": "vecchio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OMGVecchio/training/issues"
+  },
+  "homepage": "https://github.com/OMGVecchio/training#readme",
+  "type": "module"
+}
