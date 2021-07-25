@@ -21,8 +21,8 @@ http.createServer(async (req, res) => {
 
       /** 根据 queryString 的 timing 参数设置资源延迟加载时间 */
       if (timing) {
-        const fileContent = await promisify(fs.readFile)(fullPath)
         await sleep(timing)
+        const fileContent = await promisify(fs.readFile)(fullPath)
         res.end(fileContent)
         return
       }
@@ -36,6 +36,8 @@ http.createServer(async (req, res) => {
       res.end()
     }
   }
+
+  res.setHeader('Access-Control-Allow-Origin', '*')
 
   /** 构造 URL 对象 */
   const urlObj = new URL(req.url, `http://${req.headers.host}`)
